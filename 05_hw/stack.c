@@ -35,14 +35,18 @@ void pop(Stack* stack) {
 }
 
 Node* searchByValue(Stack* stack, int value) {
+    if (!stack) return NULL;
+
     Node* current = stack->top;
     while (current != NULL) {
         if (current->data == value) {
             return current;
         }
+        current = current->next;
     }
     return NULL;
 }
+
 
 Node* searchByIndex(Stack* stack, int index) {
     Node* current = stack->top;
