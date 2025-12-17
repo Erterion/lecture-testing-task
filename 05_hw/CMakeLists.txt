@@ -102,6 +102,10 @@ target_link_libraries(stack_demo stack_lib)
 add_executable(stack_tests tests.c)
 target_link_libraries(stack_tests stack_lib)
 
+# 3. Бенчмарки
+add_executable(stack_benchmarks benchmarks.c)
+target_link_libraries(stack_benchmarks stack_lib)
+
 # Установить демо как стартовый проект для Visual Studio
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT stack_demo)
 
