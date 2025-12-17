@@ -96,4 +96,7 @@ bool isEmpty(Stack* stack) {
     return !stack || stack->top == NULL;
 }
 
+int top(Stack* stack) {
+    return (stack && stack->top) ? stack->top->data : INT_MIN;
+}
 
