@@ -9,46 +9,33 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     
-    - name: Setup MSVC (просто компилятор)
-      uses: microsoft/setup-msbuild@v1
-    
-    - name: Build with CMake (без специфичного генератора)
+    - name: Build
       run: |
         cd 05_hw
-        mkdir build
+        mkdir -Force build
         cd build
-        # Просто cmake без -G, он сам выберет генератор
         cmake ..
         cmake --build . --config Release
     
     - name: Run tests
       run: |
         cd 05_hw/build
-        if exist Release\tests.exe (
+        if (Test-Path "Release\tests.exe") {
           .\Release\tests.exe
-        ) elseif exist Debug\tests.exe (
+        } elseif (Test-Path "Debug\tests.exe") {
           .\Debug\tests.exe
-        ) else (
-          dir /B /S *.exe
-          echo "ERROR: tests.exe not found!"
+        } else {
+          Write-Error "tests.exe not found!"
+          Get-ChildItem -Recurse -Filter "*.exe"
           exit 1
-        )
+        }
     
     - name: Run demo
       run: |
         cd 05_hw/build
-        if exist Release\demo.exe (
-          .\Release\demo.exe
-        ) elseif exist Debug\demo.exe (
-          .\Debug\demo.exe
-        )
+        if (Test-Path "Release\demo.exe") { .\Release\demo.exe }
     
     - name: Run benchmarks
       run: |
         cd 05_hw/build
-        if exist Release\benchmarks.exe (
-          .\Release\benchmarks.exe
-        ) elseif exist Debug\benchmarks.exe (
-          .\Debug\benchmarks.exe
-        )
-        
+        if (Test-Path "Release\benchmarks.exe") { .\Release\benchmarks.exe }
