@@ -29,9 +29,17 @@ void push(Stack* stack, int data) {
     stack->top = newNode;
 }
 
-void pop(Stack* stack) {
+bool pop(Stack* stack, int* value) {
+    if (!stack || !stack->top || !value) {
+        return false;
+    }
+
     Node* temp = stack->top;
-    stack->top = stack->top->next;
+    *value = temp->data;
+    stack->top = temp->next;
+    free(temp);
+
+    return true;
 }
 
 Node* searchByValue(Stack* stack, int value) {
