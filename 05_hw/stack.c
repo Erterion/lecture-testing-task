@@ -5,6 +5,10 @@
 
 Node* createNode(int data) {
     Node* newNode = (Node*)malloc(sizeof(Node));
+    if (!newNode) {
+        fprintf(stderr, "Ошибка выделения памяти\n");
+        return NULL;
+    }
     newNode->data = data;
     newNode->next = NULL;
     return newNode;
@@ -23,10 +27,15 @@ void destroyStack(Stack* stack) {
     }
 }
 
-void push(Stack* stack, int data) {
+bool push(Stack* stack, int data) {
+    if (!stack) return false;
+
     Node* newNode = createNode(data);
+    if (!newNode) return false;
+
     newNode->next = stack->top;
     stack->top = newNode;
+    return true;
 }
 
 bool pop(Stack* stack, int* value) {
