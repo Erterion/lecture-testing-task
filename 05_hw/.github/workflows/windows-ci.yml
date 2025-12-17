@@ -34,19 +34,19 @@ jobs:
     - name: Run tests
       run: |
         cd build
-        .\Release\stack_tests.exe
+        .\Release\tests.exe
     
     # Шаг 5: Запустить демо
     - name: Run demo
       run: |
         cd build
-        .\Release\stack_demo.exe
+        .\Release\demo.exe
     
     # Шаг 6: Запустить бенчмарки
     - name: Run benchmarks
       run: |
         cd build
-        .\Release\stack_benchmarks.exe
+        .\Release\benchmarks.exe
     
     # Шаг 7: Показать файлы
     - name: List artifacts
