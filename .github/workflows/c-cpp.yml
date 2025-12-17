@@ -1,6 +1,5 @@
 name: Windows CI
 
-# Когда запускать
 on:
   push:
     branches: [main, master]
@@ -9,47 +8,41 @@ on:
 
 jobs:
   build-and-test:
-    # Запускаем на Windows
     runs-on: windows-latest
     
     steps:
-    # Шаг 1: Получить код
     - name: Checkout repository
       uses: actions/checkout@v3
     
-    # Шаг 2: Настроить CMake
     - name: Configure CMake
       run: |
+        cd 05_hw
         mkdir build
         cd build
         cmake .. -G "Visual Studio 16 2019" -A x64
     
-    # Шаг 3: Собрать проект
     - name: Build project
       run: |
-        cd build
+        cd 05_hw/build
         cmake --build . --config Release
     
-    # Шаг 4: Запустить тесты
     - name: Run tests
       run: |
-        cd build
+        cd 05_hw/build
         .\Release\tests.exe
     
-    # Шаг 5: Запустить демо
     - name: Run demo
       run: |
-        cd build
+        cd 05_hw/build
         .\Release\demo.exe
     
-    # Шаг 6: Запустить бенчмарки
     - name: Run benchmarks
       run: |
-        cd build
+        cd 05_hw/build
         .\Release\benchmarks.exe
     
-    # Шаг 7: Показать файлы
     - name: List artifacts
       run: |
-        cd build
+        echo "=== Files in 05_hw/build/Release ==="
+        cd 05_hw/build
         dir /B Release\*.exe
