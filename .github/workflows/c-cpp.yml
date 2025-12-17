@@ -1,48 +1,53 @@
 name: Windows CI
 
-on:
-  push:
-    branches: [main, master]
-  pull_request:
-    branches: [main, master]
+on: [push, pull_request]
 
 jobs:
-  build-and-test:
+  build:
     runs-on: windows-latest
     
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+    - uses: actions/checkout@v3
     
-    - name: Configure CMake
+    - name: Setup MSVC (просто компилятор)
+      uses: microsoft/setup-msbuild@v1
+    
+    - name: Build with CMake (без специфичного генератора)
       run: |
         cd 05_hw
         mkdir build
         cd build
-        cmake .. -G "Visual Studio 16 2019" -A x64
-    
-    - name: Build project
-      run: |
-        cd 05_hw/build
+        # Просто cmake без -G, он сам выберет генератор
+        cmake ..
         cmake --build . --config Release
     
     - name: Run tests
       run: |
         cd 05_hw/build
-        .\Release\tests.exe
+        if exist Release\tests.exe (
+          .\Release\tests.exe
+        ) elseif exist Debug\tests.exe (
+          .\Debug\tests.exe
+        ) else (
+          dir /B /S *.exe
+          echo "ERROR: tests.exe not found!"
+          exit 1
+        )
     
     - name: Run demo
       run: |
         cd 05_hw/build
-        .\Release\demo.exe
+        if exist Release\demo.exe (
+          .\Release\demo.exe
+        ) elseif exist Debug\demo.exe (
+          .\Debug\demo.exe
+        )
     
     - name: Run benchmarks
       run: |
         cd 05_hw/build
-        .\Release\benchmarks.exe
-    
-    - name: List artifacts
-      run: |
-        echo "=== Files in 05_hw/build/Release ==="
-        cd 05_hw/build
-        dir /B Release\*.exe
+        if exist Release\benchmarks.exe (
+          .\Release\benchmarks.exe
+        ) elseif exist Debug\benchmarks.exe (
+          .\Debug\benchmarks.exe
+        )
