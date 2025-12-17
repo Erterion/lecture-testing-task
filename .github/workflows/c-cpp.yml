@@ -51,3 +51,4 @@ jobs:
         ) elseif exist Debug\benchmarks.exe (
           .\Debug\benchmarks.exe
         )
+        
