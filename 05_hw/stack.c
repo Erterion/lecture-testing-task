@@ -84,7 +84,7 @@ void traverseStack(Stack* stack) {
 }
 
 bool isEmpty(Stack* stack) {
-    free(stack->top);
-    return stack->top == NULL;
+    return !stack || stack->top == NULL;
 }
+
 
